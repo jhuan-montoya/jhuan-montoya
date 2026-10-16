@@ -1,21 +1,19 @@
 # Olá, eu sou o Jhuan 👋
 
-Engenheiro de Software de IA em Belo Horizonte. Construo agentes LLM e sistemas backend que rodam em produção, não só protótipos.
+Engenheiro de Software em Belo Horizonte. Trabalho perto da operação: encontro processos manuais, frágeis ou caros e transformo em software confiável. Uso IA quando ela é a melhor ferramenta, e regras, dados e testes quando não é.
 
-No **Méliuz**, criei do zero a **Mel**, o agente de atendimento por IA da Central de Ajuda: do MVP ao lançamento para a base de usuários e, depois, a migração para a plataforma oficial da empresa, com mais de 3.300 testes automatizados e cerca de 98% de cobertura. O código e a arquitetura são da empresa e por isso não estão aqui.
+No **Méliuz**, construo automações e ferramentas para Operações: uma plataforma de automações em Go (idempotência, disjuntor, modos sombra, rascunho e automático, 100% de cobertura no CI), a conferência automática de rastreio de compras (99,9% de concordância com o processo manual) e a investigação de compras não rastreadas. Também criei o MVP do primeiro assistente de atendimento por IA da empresa. O código é proprietário e por isso não está aqui.
 
 ### O que eu faço
 
-- **Agentes e LLMs:** arquiteturas multiagente com LangGraph, RAG, function calling, MCP, Gemini / Vertex AI
-- **Qualidade de IA:** avaliação automática (LLM-as-judge), testes de regressão e revisão humana
-- **Backend e plataforma:** Python (FastAPI, gRPC), Node.js / TypeScript, Go, PostgreSQL, Redis, Kubernetes, Terraform, AWS e GCP
-- **Ferramentas internas e automação:** painéis de back-office em React / Next.js, n8n, BigQuery
-
-Trabalho de forma AI-native: oriento agentes de código em paralelo, com testes e revisão encadeados.
+- **Backend e automação:** Python, Go, Node.js / TypeScript, gRPC, APIs REST, PostgreSQL, BigQuery
+- **IA aplicada:** LLMs, agentes com LangGraph, RAG, avaliação automática (LLM-as-judge)
+- **Plataforma:** Kubernetes, Terraform, Docker, AWS, GCP, CI/CD, observabilidade
+- **Ferramentas internas:** painéis de back-office em React / Next.js, n8n
 
 ### Stack
 
-`Python` `TypeScript` `Go` `SQL` · `LangGraph` `RAG` `Gemini` `MCP` · `FastAPI` `gRPC` `Node.js` `PostgreSQL` `Redis` · `Kubernetes` `Docker` `Terraform` `AWS` `GCP` · `React` `Next.js` `n8n`
+`Python` `Go` `TypeScript` `SQL` · `gRPC` `Node.js` `PostgreSQL` `BigQuery` `Redis` · `LangGraph` `LLMs` `RAG` · `Kubernetes` `Terraform` `Docker` `AWS` `GCP` · `React` `Next.js` `n8n`
 
 ### Projetos
 
@@ -27,7 +25,7 @@ Trabalho de forma AI-native: oriento agentes de código em paralelo, com testes 
 
 ### Estudos de caso
 
-- [**Mel**](cases/mel.md): agente de atendimento por IA em produção no Méliuz (meu papel e lições)
+- [**Assistente de atendimento por IA**](cases/assistente-ia.md): o primeiro assistente de IA do Méliuz (meu papel e lições)
 - [**Cutu**](cases/cutu.md): IA que participa de grupos de WhatsApp, com um modelo por papel e custo medido por grupo (projeto pessoal)
 
 ### Prêmios
