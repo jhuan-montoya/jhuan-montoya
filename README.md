@@ -20,7 +20,7 @@ Trabalho de forma AI-native: oriento agentes de código em paralelo, com testes 
 ### Projetos públicos
 
 - [**zendesk-attachment-cleaner**](https://github.com/jhuan-montoya/zendesk-attachment-cleaner): libera armazenamento do Zendesk removendo anexos de tickets antigos sem apagar os tickets (Python, Docker)
-- [**ia-proposta-comercial**](https://github.com/jhuan-montoya/ia-proposta-comercial): extrai dados de propostas comerciais em PDF com Gemini e analisa o histórico de aceite (Python, Streamlit)
+- [**crud-propostas-comercial**](https://github.com/jhuan-montoya/crud-propostas-comercial): gestão de propostas comerciais com extração de PDF por IA (Gemini), assinatura e análise de decisão (Python, Streamlit, Firebase)
 - [**ajuda_ae_negocios**](https://github.com/jhuan-montoya/ajuda_ae_negocios): chatbot de WhatsApp e site feitos no hackathon Zenvia
 - [**landing-page-tailwindscss**](https://github.com/jhuan-montoya/landing-page-tailwindscss): landing page do hackathon ESG Novo Nordisk (Vite + Tailwind)
 
