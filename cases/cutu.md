@@ -1,66 +1,56 @@
-# Cutu: uma IA que participa de grupos de WhatsApp
+# Estudo de caso: Cutu, uma IA que participa de grupos de WhatsApp
 
-Projeto pessoal. O Cutu entra no grupo como mais um participante: responde quando é chamado, comenta quando tem algo a dizer, lembra de conversas antigas e confere boato. O problema de engenharia mais interessante não é falar, e sim saber **quando ficar quieto**.
+## Resumo
+- **Papel:** criador e único desenvolvedor
+- **Tipo:** produto próprio (código fechado)
+- **Período:** 2026
+- **Stack:** Node.js, PostgreSQL com pgvector, Next.js, vários provedores de LLM
+- **Impacto:** cerca de US$ 0,15 por mil mensagens num grupo bem ativo, depois de reduzir o custo por chamada em cerca de 4x
 
-## Pipeline: leitor, decisor, escritor
+---
 
-Cada lote de mensagens passa por três papéis, e cada papel usa um modelo diferente, escolhido pelo que o papel exige:
+## Visão geral
+O Cutu entra num grupo de WhatsApp como mais um participante: responde quando é chamado, comenta quando tem algo a dizer, lembra de conversas antigas e confere boatos. O desafio de engenharia mais interessante não é fazer a IA falar, e sim fazê-la saber **quando ficar quieta**, com custo previsível.
 
-- **Leitor**: passa o olho em todo lote, anota o assunto, o clima e o que um participante atento notaria. Roda sempre, então é o modelo mais barato. Quando há imagem, usa uma variante com visão.
-- **Decisor**: escolhe se entra, em qual mensagem e com qual ação. É a etapa que mais pesa na qualidade percebida.
-- **Escritor**: só escreve o que vai para o grupo, na voz configurada.
+## Problema
+- **Bot que responde a tudo cansa o grupo** em um dia.
+- **Custo cresce com cada mensagem:** num grupo ativo, cada chamada de modelo pesa no preço do produto.
+- **Provedores falham:** queda ou resposta inválida de um provedor não pode derrubar o grupo.
 
-Separar os papéis permite trocar um modelo sem mexer nos outros e medir o custo de cada etapa.
+## Processo
 
-```mermaid
-flowchart LR
-    M[Mensagens do grupo] --> L[Leitor - modelo barato]
-    L --> D{Decisor}
-    D -- silêncio --> Q[Não responde]
-    D -- entrar --> W[Escritor]
-    W --> J[Regras fixas no envio]
-    J --> G[Grupo]
-    L --> MEM[(Memória com busca)]
-    MEM --> D
-    A[Áudio: transcrição] --> L
-    I[Imagem: reduzida] --> L
-```
+### Abordagem
+Separei o trabalho em papéis, cada um com o modelo adequado ao que exige: um papel que lê todo lote de mensagens (o mais barato, porque roda sempre), um que decide se vale entrar na conversa e um que escreve o texto final. Assim dá para trocar o modelo de um papel sem mexer nos outros e medir o custo de cada etapa.
 
-## Silêncio como feature
+### Decisões principais
+- **Silêncio como resultado válido.** Ficar calado é um desfecho de primeira classe, com custo zero no papel que escreve. Há cota de interações, horário silencioso e ritmo configurável.
+- **Determinístico antes do generativo.** Perguntas como "quando a gente falou de viagem?" são resolvidas por busca na memória, sem chamar modelo.
+- **Trocar modelo só com medição.** Antes de baratear um papel, a troca passa por avaliação com juiz cego. A parte aberta dessa avaliação está em [llm-roles-eval](https://github.com/jhuan-montoya/llm-roles-eval).
 
-Um bot que responde a tudo cansa o grupo em um dia. O Cutu tem cota de interações, horário silencioso, ritmo configurável e um decisor que pode escolher não fazer nada. No humor, o pipeline gera candidatas e um segundo modelo as compara; se nenhuma passa, **o resultado é ficar quieto, sem nova tentativa**. Candidata que não se apoia em uma mensagem real do contexto é descartada antes de chegar ao juiz. Ficar calado é um desfecho de primeira classe, com custo zero de IA no escritor.
+## Solução
+- **Pipeline por papéis** com um modelo por papel e reserva para cada um.
+- **Memória com busca** sobre o histórico do grupo.
+- **Áudio e imagem:** áudio vira texto; imagem é vista só pelo papel que lê, e o arquivo não é guardado.
+- **Fallback entre provedores:** falha troca de modelo e, no pior caso, volta para um texto fixo.
 
-## Memória com busca
+## Resultados
 
-O histórico do grupo é guardado e indexado. Perguntas do tipo "quando a gente falou de viagem?" são resolvidas por busca na memória, **sem chamar modelo**; o modelo só entra para resumir quando há mais de um trecho, e o resumo só vale se citar as datas dos trechos. Onde dá, o determinístico ganha do generativo.
+| Métrica | Valor |
+|---|---|
+| Custo num grupo bem ativo | ~US$ 0,15 por mil mensagens |
+| Custo por chamada após trocar a ordem fixa de provedor por roteamento por preço | ~4x menor, sem trocar de modelo |
+| Divisão do gasto | texto 96%, imagem gerada 3%, áudio 1% |
+| Base de código | ~13 mil linhas de código e ~15,5 mil linhas de testes (71 arquivos de teste) |
 
-## Áudio e visão
+## Aprendizados
 
-Áudio é transcrito (Whisper quando há chave; senão, um modelo multimodal) e entra no fluxo como texto. Imagem é reduzida e vista apenas pelo leitor; o decisor e o escritor recebem só o texto. O arquivo não é guardado depois do uso.
+### O que funcionou
+- **A maior economia veio do roteamento, não do prompt.**
+- **Separar papéis** tornou custo e qualidade mensuráveis por etapa.
+- **Limite de tempo por teste** transformou travamentos em falhas visíveis, em vez de suíte pendurada.
 
-## Fallback entre provedores
-
-A chamada percorre uma cadeia de provedores e, dentro do roteador, cada papel tem um modelo de reserva. Falha de provedor ou resposta inválida não derruba o grupo: troca de modelo, repete e, no pior caso, volta ao texto fixo.
-
-## Avaliação com juiz cego
-
-Trocar modelo por preço sem medir qualidade é apostar. A parte aberta dessa avaliação, comparando modelos por papel com juiz cego, está em [llm-roles-eval](https://github.com/jhuan-montoya/llm-roles-eval).
-
-## Custo real
-
-Medido em produção, com o custo informado pelo provedor de roteamento:
-
-- cerca de **US$ 0,15 por mil mensagens** em um grupo bem ativo;
-- texto responde por 96% do gasto, imagem gerada por 3% e áudio por 1%;
-- trocar a ordem fixa de provedor por roteamento por preço **reduziu o custo por chamada em cerca de 4x**, sem mudar de modelo.
-
-A lição: a maior economia veio de roteamento, não de prompt. A próxima, trocar os modelos de decisor e escritor por opções menores, só entra depois de passar pela avaliação.
-
-## Números de engenharia
-
-- ≈ 13 mil linhas de código no bot;
-- ≈ 15,5 mil linhas de testes, em 71 arquivos de teste;
-- suíte com limite de tempo por teste, para travamento virar falha e não suíte pendurada.
+### Próximo passo
+- **Modelos menores nos papéis de decidir e escrever**, mas só depois de passarem pela avaliação com juiz cego.
 
 ---
 
