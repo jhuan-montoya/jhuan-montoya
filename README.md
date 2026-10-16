@@ -2,12 +2,12 @@
 
 Engenheiro de Software de IA em Belo Horizonte. Construo agentes LLM e sistemas backend que rodam em produção, não só protótipos.
 
-No **Méliuz**, criei do zero a **Mel**, o agente de atendimento por IA da Central de Ajuda: do MVP ao lançamento para a base de usuários e, depois, a migração para um microsserviço gRPC em Kubernetes, com mais de 3.300 testes automatizados e cerca de 98% de cobertura. O código é da empresa e por isso não está aqui, mas conto com prazer como foi feito.
+No **Méliuz**, criei do zero a **Mel**, o agente de atendimento por IA da Central de Ajuda: do MVP ao lançamento para a base de usuários e, depois, a migração para a plataforma oficial da empresa, com mais de 3.300 testes automatizados e cerca de 98% de cobertura. O código e a arquitetura são da empresa e por isso não estão aqui.
 
 ### O que eu faço
 
-- **Agentes e LLMs:** arquitetura multiagente (supervisor com especialistas como ferramentas) em LangGraph, RAG com pgvector, function calling, MCP, Gemini / Vertex AI
-- **Qualidade de IA:** avaliação automática (LLM-as-judge com RAGAS), suíte de regressão, fila de revisão humana, CSAT por agente
+- **Agentes e LLMs:** arquiteturas multiagente com LangGraph, RAG, function calling, MCP, Gemini / Vertex AI
+- **Qualidade de IA:** avaliação automática (LLM-as-judge), testes de regressão e revisão humana
 - **Backend e plataforma:** Python (FastAPI, gRPC), Node.js / TypeScript, Go, PostgreSQL, Redis, Kubernetes, Terraform, AWS e GCP
 - **Ferramentas internas e automação:** painéis de back-office em React / Next.js, n8n, BigQuery
 
