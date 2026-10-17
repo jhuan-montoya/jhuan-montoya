@@ -2,7 +2,7 @@
 
 Engenheiro de Software em Belo Horizonte. Trabalho perto da operação: encontro processos manuais, frágeis ou caros e transformo em software confiável. Uso IA quando ela é a melhor ferramenta, e regras, dados e testes quando não é.
 
-No **Méliuz**, construo automações e ferramentas para Operações: uma plataforma de automações em Go (idempotência, disjuntor, modos sombra, rascunho e automático, 100% de cobertura no CI), a conferência automática de rastreio de compras (99,9% de concordância com o processo manual) e a investigação de compras não rastreadas. Também criei o MVP do primeiro assistente de atendimento por IA da empresa. O código é proprietário e por isso não está aqui.
+No **Méliuz**, construo automações e ferramentas para Operações: uma plataforma de automações em Go (idempotência, disjuntor, modos sombra, rascunho e automático, 100% de cobertura no CI), a conferência automática de rastreio de compras (99,9% de concordância com o processo manual) e a investigação de compras não rastreadas. Também criei o primeiro assistente de atendimento por IA da empresa. O código é proprietário e por isso não está aqui.
 
 ### O que eu faço
 
